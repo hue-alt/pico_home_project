@@ -22,5 +22,7 @@ target_link_libraries(outside_station
     pico_cyw43_arch_lwip_threadsafe_background
 )
 
+target_compile_options(outside_station PRIVATE -Wall -Wextra)
+
 pico_enable_stdio_usb(outside_station 1)
 pico_add_extra_outputs(outside_station)

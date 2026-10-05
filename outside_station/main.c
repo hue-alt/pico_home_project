@@ -1,7 +1,5 @@
 #include <pico/stdlib.h>
-#include <hardware/adc.h>
 #include <hardware/i2c.h>
-#include <stdio.h>
 #include "config.h"
 #include "aht20.h"
 #include "bh1750.h"
@@ -13,7 +11,7 @@
 #include "data_transmission.h"
 
 
-int main(){
+int main(void){
     stdio_init_all();
     sleep_ms(2000);
     bh1750_initialization(i2c0);
@@ -29,14 +27,26 @@ int main(){
     while(true){
         float aht_temperature = 0.0f;
         float humidity = 0.0f;
-        get_temp_and_humidity(i2c1, &aht_temperature, &humidity);
+        bool aht_ok = get_temp_and_humidity(i2c1, &aht_temperature, &humidity);
         float pressure = 0.00f;
         float bmp_280_temperature = 0.0f;
-        bmp280_get_temp_and_pressure(i2c1, &bmp_280_temperature, &pressure);
-        float temperature_inside_box = ((aht_temperature) + (bmp_280_temperature))/2.0f; //temperature inside box with pico
+        bool bmp_ok = bmp280_get_temp_and_pressure(i2c1, &bmp_280_temperature, &pressure);
+
+        float temperature_inside_box = 0.0f;
+        if(aht_ok && bmp_ok){
+            temperature_inside_box = (aht_temperature + bmp_280_temperature) / 2.0f;
+        }else if(aht_ok){
+            temperature_inside_box = aht_temperature;
+        }else if(bmp_ok){
+            temperature_inside_box = bmp_280_temperature;
+        }
+
         float temperature_outside = DS18B20_get_temperature(ds18b20_pin);
         float uv_value = get_uv_value(guva12sd_pin);
         float get_lux = bh1750_get_lux(i2c0);
+        if(get_lux < 0.0f){
+            get_lux = 0.0f;
+        }
         uint32_t vibrations = sw420_get_result();
         int rain_coefficient = get_rain_coefficient(fc_37_pin);
 
@@ -74,13 +84,13 @@ int main(){
         outside_station o_station = {
             .station_id = STATION_OUTSIDE,
             .humidity = humidity,
-            .lux_value = get_lux,
             .temperature = temperature_inside_box,
+            .lux_value = get_lux,
             .temperature_outside = temperature_outside,
+            .rain_coefficient = (float)rain_coefficient,
             .uv_index = uv_value,
-            .vibration_count = vibrations,
-            .rain_coefficient = rain_coefficient,
-            .pressure = pressure
+            .pressure = pressure,
+            .vibration_count = vibrations
         };
 
         data_transmission(&o_station);

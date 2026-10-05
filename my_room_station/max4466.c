@@ -27,5 +27,6 @@ float max4466_decibel_level(unsigned int pin){
     float voltage = (max_value - min_value) * (3.3f / 4095.f);
     if (voltage < 0.001f) return 0.0f;
     float decibel_level = 20 * log10f(voltage / 0.005f);
+    if (decibel_level < 0.0f) decibel_level = 0.0f;
     return decibel_level;
 }

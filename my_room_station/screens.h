@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include "datareception.h"
-#include "config.h"
 #include "ds3231.h"
 
 typedef struct room_data{

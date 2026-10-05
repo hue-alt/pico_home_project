@@ -22,5 +22,7 @@ target_link_libraries(my_room_station
     pico_cyw43_arch_lwip_threadsafe_background
 )
 
+target_compile_options(my_room_station PRIVATE -Wall -Wextra)
+
 pico_enable_stdio_usb(my_room_station 1)
 pico_add_extra_outputs(my_room_station)

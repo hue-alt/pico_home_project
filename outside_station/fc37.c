@@ -14,7 +14,13 @@ unsigned int get_rain_coefficient(unsigned int pin){
     adc_select_input(pin - 26);
     float raw = adc_read();
     float current_value = ((4095.0f - raw)/4095.0f) * 100.0f;
-    return (int)(current_value);
+    if(current_value < 0.0f){
+        return 0;
+    }
+    if(current_value > 100.0f){
+        return 100;
+    }
+    return (unsigned int)current_value;
 }
 
 

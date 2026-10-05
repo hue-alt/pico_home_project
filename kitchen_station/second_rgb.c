@@ -6,7 +6,7 @@
 
 
 
-void second_rgb_initialize(){
+void second_rgb_initialize(void){
     gpio_init(second_diode_red_pin);
     gpio_set_dir(second_diode_red_pin, GPIO_OUT);
     gpio_init(second_diode_blue_pin);
@@ -17,6 +17,6 @@ void second_rgb_initialize(){
 
 void second_rgb_set_color(bool red, bool green, bool blue){
     gpio_put(second_diode_red_pin, red);
-    gpio_put(second_diode_blue_pin, blue);
     gpio_put(second_diode_green_pin, green);
+    gpio_put(second_diode_blue_pin, blue);
 }

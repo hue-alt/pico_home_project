@@ -4,8 +4,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "pico/stdlib.h"
-#include "config.h"
 
 typedef enum {
     STATION_OUTSIDE = 1,

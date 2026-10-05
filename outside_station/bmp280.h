@@ -1,6 +1,6 @@
 #ifndef BMP280_H
 #define BMP280_H
-#include <hardware\i2c.h>
+#include <hardware/i2c.h>
 
 
 

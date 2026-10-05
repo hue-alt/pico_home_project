@@ -1,6 +1,6 @@
 #ifndef MQ7_H
 #define MQ7_H
-#include "pico/stdlib.h"
+
 #include <stdbool.h>
 
 

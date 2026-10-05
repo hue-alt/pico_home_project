@@ -1,9 +1,7 @@
 #ifndef DATATRANSMISSION_H
 #define DATATRANSMISSION_H
-#include "pico/stdlib.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "config.h"
 
 typedef struct __attribute__((packed)){
     uint8_t station_id;
@@ -13,8 +11,8 @@ typedef struct __attribute__((packed)){
     double temperature_outside;
     float rain_coefficient;
     float uv_index;
-    uint32_t vibration_count;
     float pressure;
+    uint32_t vibration_count;
 }outside_station;
 
 typedef enum {

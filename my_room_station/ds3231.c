@@ -56,6 +56,6 @@ bool ds3231_get_time(i2c_inst_t *i2c, ds3231_time *time){
     time->week_day = bcd_to_dec(buffer[3] & 0x07);
     time->day      = bcd_to_dec(buffer[4] & 0x3F);
     time->month    = bcd_to_dec(buffer[5] & 0x1F); 
-    time->year     = 2000 + bcd_to_dec(buffer[6]); 
+    time->year     = bcd_to_dec(buffer[6]); 
     return true;
 }

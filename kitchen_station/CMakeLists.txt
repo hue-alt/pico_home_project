@@ -25,6 +25,8 @@ target_link_libraries(kitchen_station
 
 )
 
+target_compile_options(kitchen_station PRIVATE -Wall -Wextra)
+
 pico_enable_stdio_usb(kitchen_station 1)
 pico_enable_stdio_uart(kitchen_station 0)
 pico_add_extra_outputs(kitchen_station)

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <pico/stdlib.h>
-#include <hardware/adc.h>
 #include "config.h"
 #include "mq6.h"
 #include "mq7.h"
@@ -11,7 +10,7 @@
 #include "second_rgb.h"
 #include "data_transmission2.h"
 
-int main() {
+int main(void) {
     stdio_init_all();
     sleep_ms(2000);
     rgb_initialize();
@@ -81,7 +80,7 @@ int main() {
         fflush(stdout);
         */
         kitchen_data k_data = {
-            .station_id           = KITCHEN_STATION,
+            .station_id           = STATION_KITCHEN,
             .decibel_level        = decibel_amount,
             .carbon_dioxide_level = carbon_dioxide_level,
             .dust_density         = dust_density,

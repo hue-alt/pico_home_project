@@ -1,8 +1,8 @@
 #ifndef DATATRANSMISSION2_H
 #define DATATRANSMISSION2_H
 
-#include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 
 typedef struct __attribute__((packed)){

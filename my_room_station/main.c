@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <config.h>
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
-#include "hardware/adc.h"
+#include "config.h"
 #include "buttons.h"
 #include "aht20.h"
 #include "ds3231.h"
@@ -13,7 +12,7 @@
 
 
 
-int main(){
+int main(void){
     stdio_init_all();
     sleep_ms(2000);
     aht20_initialization(i2c1);
@@ -31,6 +30,8 @@ int main(){
 
 
     uint32_t temp = 0;
+    uint32_t last_display_time = 0;
+    uint8_t prev_screen = 0;
 
     while(true){
         get_kitchen_data(&kdata);
@@ -45,7 +46,13 @@ int main(){
             get_temp_and_humidity(i2c1, &rdata.temperature_room, &rdata.humidity_room);
             temp = time;
         }
-        display_screen(current_screen, &kdata, &odata, &rdata);
+
+        if(current_screen != prev_screen || (time - last_display_time >= 250)){
+            display_screen(current_screen, &kdata, &odata, &rdata);
+            prev_screen = current_screen;
+            last_display_time = time;
+        }
+
         sleep_ms(20);
     }
 

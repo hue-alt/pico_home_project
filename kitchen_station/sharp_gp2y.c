@@ -4,7 +4,7 @@
 #include "hardware/adc.h"
 
 
-void sharp_gp2y_initialize(){
+void sharp_gp2y_initialize(void){
     gpio_init(sharp_led_pin);
     gpio_set_dir(sharp_led_pin, GPIO_OUT);
     gpio_put(sharp_led_pin, 1);
@@ -12,7 +12,7 @@ void sharp_gp2y_initialize(){
     adc_gpio_init(sharp_pin);
 }
 
-float dust_density_level(){
+float dust_density_level(void){
     adc_select_input(sharp_pin - 26);
     gpio_put(sharp_led_pin, 0); //turning on the diode
     sleep_us(280);
@@ -21,7 +21,7 @@ float dust_density_level(){
     gpio_put(sharp_led_pin, 1); //turning off the diode
     sleep_us(9680);
     float voltage_out = (raw * 3.3f)/4095.0f;
-    float dust_density = (voltage_out - 0.7) * 500;
+    float dust_density = (voltage_out - 0.7f) * 500.0f;
     if(dust_density < 0.0f){
         return 0.0f;
     }

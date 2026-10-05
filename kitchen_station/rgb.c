@@ -4,7 +4,7 @@
 #include "rgb.h"
 
 
-void rgb_initialize(){
+void rgb_initialize(void){
     gpio_init(diode_red_pin);
     gpio_set_dir(diode_red_pin, GPIO_OUT);
     gpio_init(diode_green_pin);

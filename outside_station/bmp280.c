@@ -33,17 +33,17 @@ bool bmp280_initalization(i2c_inst_t *i2c){
         return false;
     }
     coefficents.temp1 = (buffer_register[1] << 8) | buffer_register[0];
-    coefficents.temp2 = ((buffer_register[3] << 8) | buffer_register[2]);
-    coefficents.temp3 = ((buffer_register[5] << 8) | buffer_register[4]);
+    coefficents.temp2 = (int16_t)((buffer_register[3] << 8) | buffer_register[2]);
+    coefficents.temp3 = (int16_t)((buffer_register[5] << 8) | buffer_register[4]);
     coefficents.pressure1 = (buffer_register[7] << 8) | buffer_register[6];
-    coefficents.pressure2 = ((buffer_register[9] << 8) | buffer_register[8]);
-    coefficents.pressure3 = ((buffer_register[11] << 8) | buffer_register[10]);
-    coefficents.pressure4 = ((buffer_register[13] << 8) | buffer_register[12]);
-    coefficents.pressure5 = ((buffer_register[15] << 8) | buffer_register[14]);
-    coefficents.pressure6 = ((buffer_register[17] << 8) | buffer_register[16]);
-    coefficents.pressure7 = ((buffer_register[19] << 8) | buffer_register[18]);
-    coefficents.pressure8 = ((buffer_register[21] << 8) | buffer_register[20]);
-    coefficents.pressure9 = ((buffer_register[23] << 8) | buffer_register[22]);
+    coefficents.pressure2 = (int16_t)((buffer_register[9] << 8) | buffer_register[8]);
+    coefficents.pressure3 = (int16_t)((buffer_register[11] << 8) | buffer_register[10]);
+    coefficents.pressure4 = (int16_t)((buffer_register[13] << 8) | buffer_register[12]);
+    coefficents.pressure5 = (int16_t)((buffer_register[15] << 8) | buffer_register[14]);
+    coefficents.pressure6 = (int16_t)((buffer_register[17] << 8) | buffer_register[16]);
+    coefficents.pressure7 = (int16_t)((buffer_register[19] << 8) | buffer_register[18]);
+    coefficents.pressure8 = (int16_t)((buffer_register[21] << 8) | buffer_register[20]);
+    coefficents.pressure9 = (int16_t)((buffer_register[23] << 8) | buffer_register[22]);
     return true;
 }
 

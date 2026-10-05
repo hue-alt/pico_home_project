@@ -5,7 +5,7 @@
 void mq7_initialize(unsigned int pin){
     gpio_init(pin);
     gpio_set_dir(pin, GPIO_IN);
-    gpio_disable_pulls(pin);
+    gpio_pull_up(pin);
 }
 
 bool is_mq7_alarm(unsigned int pin){

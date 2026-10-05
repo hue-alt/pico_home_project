@@ -13,7 +13,10 @@ void guva12sd_initialize(unsigned int pin){
 float get_uv_value(unsigned int pin){
     adc_select_input(pin - 26);
     uint16_t raw = adc_read();
-    float voltage = (raw/4095.0f) * 3.3f;
-    float uv_index = voltage * 10;
+    float voltage = (raw / 4095.0f) * 3.3f;
+    float uv_index = voltage * 10.0f;
+    if(uv_index < 0.0f){
+        uv_index = 0.0f;
+    }
     return uv_index;
 }

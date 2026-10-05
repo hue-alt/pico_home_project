@@ -14,5 +14,5 @@ bool is_mq6_alarm(unsigned int pin){
 void mq6_initialize(unsigned int pin){
     gpio_init(pin);
     gpio_set_dir(pin, GPIO_IN);
-    gpio_disable_pulls(pin);
+    gpio_pull_up(pin);
 }
