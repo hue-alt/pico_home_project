@@ -13,18 +13,47 @@ typedef struct {
 
 bmp_280_vars coefficents;
 
+static uint8_t bmp280_addr = 0x76;
+static bool bmp280_initialized = false;
+
+static bool test_bmp280_addr(i2c_inst_t *i2c, uint8_t addr) {
+  uint8_t id_reg = 0xD0;
+  uint8_t chip_id = 0;
+  int w = i2c_write_blocking(i2c, addr, &id_reg, 1, true);
+  if (w != 1) return false;
+  int r = i2c_read_blocking(i2c, addr, &chip_id, 1, false);
+  if (r != 1) return false;
+  return (chip_id == 0x58 || chip_id == 0x60 || chip_id == 0x56 || chip_id == 0x57);
+}
+
 bool bmp280_initalization(i2c_inst_t *i2c) {
   i2c_init(i2c, 100000);
   gpio_set_function(aht20_bmp280_sda1_pin, GPIO_FUNC_I2C);
   gpio_set_function(aht20_bmp280_scl1_pin, GPIO_FUNC_I2C);
   gpio_pull_up(aht20_bmp280_sda1_pin);
   gpio_pull_up(aht20_bmp280_scl1_pin);
+
+  if (test_bmp280_addr(i2c, 0x76)) {
+    bmp280_addr = 0x76;
+  } else if (test_bmp280_addr(i2c, 0x77)) {
+    bmp280_addr = 0x77;
+  } else {
+    uint8_t wake_test[] = {0xF4, 0x27};
+    if (i2c_write_blocking(i2c, 0x76, wake_test, 2, false) >= 0) {
+      bmp280_addr = 0x76;
+    } else if (i2c_write_blocking(i2c, 0x77, wake_test, 2, false) >= 0) {
+      bmp280_addr = 0x77;
+    }
+  }
+
   uint8_t wake_sensor[] = {0xF4, 0x27};
-  i2c_write_blocking(i2c, 0x76, wake_sensor, 2, false);
+  i2c_write_blocking(i2c, bmp280_addr, wake_sensor, 2, false);
+  sleep_ms(10);
+
   uint8_t reg = 0x88;
   uint8_t buffer_register[24];
-  i2c_write_blocking(i2c, 0x76, &reg, 1, true);
-  uint8_t read_bytes = i2c_read_blocking(i2c, 0x76, buffer_register, 24, false);
+  i2c_write_blocking(i2c, bmp280_addr, &reg, 1, true);
+  int read_bytes = i2c_read_blocking(i2c, bmp280_addr, buffer_register, 24, false);
   if (read_bytes != 24) {
     return false;
   }
@@ -48,16 +77,25 @@ bool bmp280_initalization(i2c_inst_t *i2c) {
       (int16_t)((buffer_register[21] << 8) | buffer_register[20]);
   coefficents.pressure9 =
       (int16_t)((buffer_register[23] << 8) | buffer_register[22]);
+  bmp280_initialized = true;
   return true;
 }
 
 bool bmp280_get_temp_and_pressure(i2c_inst_t *i2c, float *temperature,
                                   float *pressure) {
+  if (!bmp280_initialized) {
+    if (!bmp280_initalization(i2c)) {
+      return false;
+    }
+  }
 
   uint8_t read_reg = 0xF7;
   uint8_t buffer[6];
-  i2c_write_blocking(i2c, 0x76, &read_reg, 1, true);
-  uint8_t read_bytes = i2c_read_blocking(i2c, 0x76, buffer, 6, false);
+  int w = i2c_write_blocking(i2c, bmp280_addr, &read_reg, 1, true);
+  if (w != 1) {
+    return false;
+  }
+  int read_bytes = i2c_read_blocking(i2c, bmp280_addr, buffer, 6, false);
   if (read_bytes != 6) {
     return false;
   }

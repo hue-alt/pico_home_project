@@ -22,7 +22,7 @@
 #define sw420_pin 16 //vibration sensor
 
 
-#define MEASUREMENT_INTERVAL 60000  // 60 seconds
+#define MEASUREMENT_INTERVAL 2000
 
 typedef enum wind_state{
     SMALL_WIND = 5,

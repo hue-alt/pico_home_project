@@ -1,2 +1,58 @@
-build
-!.vscode/*
+# Build directories and CMake files
+build/
+bin/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Makefile
+*.ninja
+.ninja_*
+ninja_log
+
+# Compiled binaries and firmware artifacts
+*.elf
+*.bin
+*.hex
+*.uf2
+*.dis
+*.map
+*.o
+*.obj
+*.a
+*.lib
+*.d
+
+# Cache and local tooling directories
+.cache/
+.agents/
+.gemini/
+
+# VS Code local files (ignore local caches/databases)
+.vscode/*.log
+.vscode/*.browse.c_cpp.db*
+.vscode/.history/
+.vscode/ipch/
+CMakeUserPresets.json
+
+# Other IDEs and Editors
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# Operating System files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+
+# Python caches
+__pycache__/
+*.py[cod]

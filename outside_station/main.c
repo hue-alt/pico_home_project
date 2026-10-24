@@ -93,8 +93,12 @@ int main(void){
             .vibration_count = vibrations
         };
 
-        data_transmission(&o_station);
-        sleep_ms(MEASUREMENT_INTERVAL);
+        bool sent = data_transmission(&o_station);
+        if (!sent) {
+            sleep_ms(1000);
+        } else {
+            sleep_ms(MEASUREMENT_INTERVAL);
+        }
     }
     return 0;
 }

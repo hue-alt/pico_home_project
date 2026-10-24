@@ -13,11 +13,11 @@ bool DS18B20_reset(unsigned int pin) {
   uint32_t ints = save_and_disable_interrupts();
   gpio_put(pin, 0);
   gpio_set_dir(pin, GPIO_OUT);
-  sleep_us(480);
+  busy_wait_us(480);
   gpio_set_dir(pin, GPIO_IN);
-  sleep_us(70);
+  busy_wait_us(70);
   bool state = gpio_get(pin);
-  sleep_us(410);
+  busy_wait_us(410);
   restore_interrupts(ints);
   if (state == 1) {
     return false;
@@ -30,13 +30,13 @@ void DS18B20_write_bit(unsigned int pin, bool bit) {
   gpio_put(pin, 0);
   gpio_set_dir(pin, GPIO_OUT);
   if (bit == true) {
-    sleep_us(3);
+    busy_wait_us(3);
     gpio_set_dir(pin, GPIO_IN);
-    sleep_us(60);
+    busy_wait_us(60);
   } else {
-    sleep_us(60);
+    busy_wait_us(60);
     gpio_set_dir(pin, GPIO_IN);
-    sleep_us(5);
+    busy_wait_us(5);
   }
   restore_interrupts(ints);
 }
@@ -45,11 +45,11 @@ bool DS18B20_read_bit(unsigned int pin) {
   uint32_t ints = save_and_disable_interrupts();
   gpio_put(pin, 0);
   gpio_set_dir(pin, GPIO_OUT);
-  sleep_us(2);
+  busy_wait_us(2);
   gpio_set_dir(pin, GPIO_IN);
-  sleep_us(10);
+  busy_wait_us(10);
   bool read = gpio_get(pin);
-  sleep_us(50);
+  busy_wait_us(50);
   restore_interrupts(ints);
   return read;
 }
